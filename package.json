@@ -1,0 +1,26 @@
+{
+  "name": "adventofcode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luwol03/AdventOfCode.git"
+  },
+  "author": "luwol03",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/luwol03/AdventOfCode/issues"
+  },
+  "homepage": "https://github.com/luwol03/AdventOfCode#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^6.2.0",
+    "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1",
+    "ora": "^5.1.0"
+  }
+}
