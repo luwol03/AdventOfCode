@@ -40,9 +40,16 @@ const textToArray = (text) => text.split('\n');
 const countChar = (s, c) =>
     s.split('').reduce((acc, ch) => (ch === c ? acc + 1 : acc), 0);
 
+const everyNthElement = (list, n) =>
+    list.reduce((l, e, i) => {
+        if (i % n === 0) l.push(e);
+        return l;
+    }, []);
+
 module.exports = {
     fetchInput,
     textToArray,
     countChar,
     getInput,
+    everyNthElement,
 };

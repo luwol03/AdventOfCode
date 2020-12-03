@@ -1,15 +1,10 @@
 const chalk = require('chalk');
-const { fetchInput, textToArray } = require('../util/util');
+const { fetchInput, textToArray, everyNthElement } = require('../util/util');
 
 function countTrees(list, x, y) {
-    let xx = 0;
-
-    return list.filter((line, i) => {
-        if (i % y !== 0) return;
-        const isTree = line[xx] === '#';
-        xx = (xx + x) % line.length;
-        return isTree;
-    });
+    return everyNthElement(list, y).filter(
+        (line, i) => (isTree = line[(i * x) % line.length] === '#')
+    );
 }
 
 async function part1(list) {
