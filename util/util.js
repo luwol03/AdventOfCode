@@ -46,10 +46,13 @@ const everyNthElement = (list, n) =>
         return l;
     }, []);
 
+const between = (x, min, max) => x >= min && x <= max;
+
 module.exports = {
     fetchInput,
     textToArray,
     countChar,
     getInput,
     everyNthElement,
+    between,
 };
