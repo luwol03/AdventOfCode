@@ -6,27 +6,28 @@ const { program } = require('commander');
 
 program
     .version(require('./package.json').version)
-    .requiredOption(
+    .option(
         '-y --year <year>',
         'year of challenge to run',
         new Date().getFullYear()
     )
-    .requiredOption(
-        '-d --day <day>',
-        'day of challenge to run',
-        new Date().getDate()
-    )
-    .option('-p --part <part>', `part of challenge to run`);
+    .option('-d --day <day>', 'day of challenge to run', new Date().getDate())
+    .option('-p --part <part>', `part of challenge to run`)
+    .option('-c --create <name>', `create file from template`);
 
 program.parse(process.argv);
 
-(async function () {
+(async function run() {
     const p = path.resolve(`${program.year}`);
 
     if (fs.existsSync(p)) {
         const pu = (await fs.promises.readdir(p))[program.day - 1];
 
-        if (pu && parseInt(pu.slice(0, 2)) === parseInt(program.day)) {
+        if (
+            pu &&
+            parseInt(pu.slice(0, 2)) === parseInt(program.day) &&
+            !program.create
+        ) {
             let day = null;
             try {
                 day = require(`./${program.year}/${pu}`);
@@ -51,6 +52,41 @@ program.parse(process.argv);
                 console.log(chalk.bold('Part 2:'));
                 await oraPromise('puzzle 2', part2);
             }
+        } else if (program.create && !pu) {
+            try {
+                const template = (
+                    await fs.promises.readFile(
+                        path.resolve('templates', 'puzzle.js'),
+                        'utf-8'
+                    )
+                )
+                    .replace('"%{year}%"', program.year)
+                    .replace('"%{day}%"', program.day);
+
+                await fs.promises.writeFile(
+                    path.resolve(
+                        `${program.year}`,
+                        `${('0' + program.day).slice(-2)}_${program.create}.js`
+                    ),
+                    template,
+                    'utf-8'
+                );
+            } catch (err) {
+                throw err;
+            }
+        } else if (pu) {
+            throw new Error('Nothing to create, file exists.');
+        } else {
+            throw new Error('challenge not found, you can create it with the -c flag');
         }
+    } else if (program.create) {
+        try {
+            await fs.promises.mkdir(path.resolve(`${program.year}`));
+            run();
+        } catch (err) {
+            throw err;
+        }
+    } else {
+        throw new Error('Nothing for this year found.');
     }
 })();
