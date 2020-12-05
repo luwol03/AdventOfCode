@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
-const ora = require('ora');
+const { oraPromise } = require('./util/ora');
 const { program } = require('commander');
 
 program
@@ -15,7 +15,8 @@ program
         '-d --day <day>',
         'day of challenge to run',
         new Date().getDate()
-    );
+    )
+    .option('-p --part <part>', `part of challenge to run`);
 
 program.parse(process.argv);
 
@@ -26,30 +27,29 @@ program.parse(process.argv);
         const pu = (await fs.promises.readdir(p))[program.day - 1];
 
         if (pu && parseInt(pu.slice(0, 2)) === parseInt(program.day)) {
+            let day = null;
             try {
-                const day = require(`./${program.year}/${pu}`);
-                const { part1, part2 } = await day();
+                day = require(`./${program.year}/${pu}`);
+            } catch (err) {
+                throw new Error('This puzzle was not found.');
+            }
+            if (day === null) throw new Error('This puzzle was not found.');
 
-                const spinner1 = ora('puzzle 1').start();
+            const { part1, part2 } = await oraPromise(
+                'parse input',
+                day,
+                'input parsed successfully.'
+            );
+            const part = parseInt(program.part);
 
-                part1()
-                    .then((res1) => {
-                        spinner1.succeed(res1);
-                        
-                        const spinner2 = ora('puzzle 2').start();
-                        part2()
-                            .then((res2) => {
-                                spinner2.succeed(res2);
-                            })
-                            .catch((err2) => {
-                                spinner2.fail(err2);
-                            });
-                    })
-                    .catch((err1) => {
-                        spinner1.fail(err1);
-                    });
-            } catch (error) {
-                console.log(chalk.red('This puzzle was not found or an error occurred.'));
+            if (isNaN(part) || part === 0 || part === 1) {
+                console.log(chalk.bold('Part 1:'));
+                await oraPromise('puzzle 1', part1);
+            }
+
+            if (isNaN(part) || part === 0 || part === 2) {
+                console.log(chalk.bold('Part 2:'));
+                await oraPromise('puzzle 2', part2);
             }
         }
     }

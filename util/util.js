@@ -48,6 +48,10 @@ const everyNthElement = (list, n) =>
 
 const between = (x, min, max) => x >= min && x <= max;
 
+const round = (x, dp) =>
+    Math.round(x * parseInt('1' + '0'.repeat(dp))) /
+    parseInt('1' + '0'.repeat(dp));
+
 module.exports = {
     fetchInput,
     textToArray,
@@ -55,4 +59,5 @@ module.exports = {
     getInput,
     everyNthElement,
     between,
+    round,
 };
