@@ -16,7 +16,17 @@ const getInput = async (year, day) => {
     ).text();
 };
 
-const fetchInput = async (year, day, cache = true) => {
+const fetchInput = async (year, day, cache = true, check = true) => {
+    if (check) {
+        const date = new Date();
+        date.setFullYear(year);
+        date.setMonth(11);
+        date.setDate(day);
+        if(date > new Date()) {
+            throw new Error('this challenge is not yet available!')
+        }
+    }
+
     const p = path.resolve('.input', `${year}`);
     const filePath = path.resolve(p, `${day}` + '.txt');
 
