@@ -77,7 +77,9 @@ program.parse(process.argv);
         } else if (pu) {
             throw new Error('Nothing to create, file exists.');
         } else {
-            throw new Error('challenge not found, you can create it with the -c flag');
+            throw new Error(
+                'challenge not found, you can create it with the -c flag'
+            );
         }
     } else if (program.create) {
         try {

@@ -18,12 +18,14 @@ const getInput = async (year, day) => {
 
 const fetchInput = async (year, day, cache = true, check = true) => {
     if (check) {
-        const date = new Date();
-        date.setFullYear(year);
-        date.setMonth(11);
-        date.setDate(day);
-        if(date > new Date()) {
-            throw new Error('this challenge is not yet available!')
+        const date = new Date(year, 11, day, 5, 0, 0, 0);
+        if (date > new Date()) {
+            const diff = date - new Date();
+            throw new Error(
+                `this challenge is not yet available! Starts in ${getTimeString(
+                    diff
+                )}h`
+            );
         }
     }
 
@@ -43,6 +45,17 @@ const fetchInput = async (year, day, cache = true, check = true) => {
     await fs.promises.writeFile(filePath, input);
 
     return input;
+};
+
+const getTimeString = (timeInMs, delimiter = ':') => {
+    let hours = Math.ceil((timeInMs / (1000 * 60 * 60)) % 60);
+    let minutes = Math.floor((timeInMs / (1000 * 60)) % 60);
+    let seconds = Math.floor((timeInMs / 1000) % 60);
+
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+    return [hours, minutes, seconds].join(delimiter);
 };
 
 const textToArray = (text) => text.split('\n');
@@ -65,6 +78,7 @@ const round = (x, dp) =>
 module.exports = {
     fetchInput,
     textToArray,
+    getTimeString,
     countChar,
     getInput,
     everyNthElement,
