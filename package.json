@@ -3,19 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "aoc": "./index.js"
+  },
   "scripts": {
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/luwol03/AdventOfCode.git"
+    "url": "http://lwsrv03:3000/wolflu/adventofcode.git"
   },
-  "author": "luwol03",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/luwol03/AdventOfCode/issues"
-  },
-  "homepage": "https://github.com/luwol03/AdventOfCode#readme",
+  "author": "Lukas Wolf",
+  "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.0",
     "commander": "^6.2.0",

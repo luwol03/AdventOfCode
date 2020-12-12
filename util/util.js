@@ -75,6 +75,11 @@ const round = (x, dp) =>
     Math.round(x * parseInt('1' + '0'.repeat(dp))) /
     parseInt('1' + '0'.repeat(dp));
 
+const fillString = (string, fill, length) => {
+    while (string.length <= length) string += fill;
+    return string;
+};
+
 module.exports = {
     fetchInput,
     textToArray,
@@ -84,4 +89,5 @@ module.exports = {
     everyNthElement,
     between,
     round,
+    fillString,
 };
