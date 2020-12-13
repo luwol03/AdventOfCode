@@ -80,6 +80,8 @@ const fillString = (string, fill, length) => {
     return string;
 };
 
+const mod = (n, m) => ((n % m) + m) % m;
+
 module.exports = {
     fetchInput,
     textToArray,
@@ -90,4 +92,5 @@ module.exports = {
     between,
     round,
     fillString,
+    mod,
 };
